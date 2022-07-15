@@ -1,6 +1,5 @@
 package com.planet.develop.Entity;
 
-import com.planet.develop.Login.Model.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +22,11 @@ public class MissionComplete extends BaseEntity{
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_code")
+    @JoinColumn(name="user_id")
     private User user;
 
     @Builder
-    public MissionComplete(String emoji,String name,User user,LocalDate date){
+    public MissionComplete(String emoji, String name, User user, LocalDate date){
         this.emoji=emoji;
         this.name=name;
         this.user = user;

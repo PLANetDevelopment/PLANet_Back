@@ -2,7 +2,7 @@ package com.planet.develop.Entity;
 
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;
-import com.planet.develop.Login.Model.User;
+import com.planet.develop.Login.Model.KakaoUser;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +30,7 @@ public class Income extends BaseEntity {
     private String memo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_code")
+    @JoinColumn(name="user_id")
     private User user;
 
     @Builder
@@ -39,7 +39,7 @@ public class Income extends BaseEntity {
         this.in_way=in_way;
         this.in_type=in_type;
         this.memo=memo;
-        this.user=user;
+        this.user = user;
         changeDate(date);
     }
 
