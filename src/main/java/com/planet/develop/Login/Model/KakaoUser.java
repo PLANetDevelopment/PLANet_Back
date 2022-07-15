@@ -11,7 +11,8 @@ import java.util.HashSet;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class KakaoUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_code")
@@ -35,14 +36,14 @@ public class User {
     @Column(name = "user_role")
     private String userRole;
 
-//    @Builder
-//    public User(Long kakaoId, String kakaoProfileImg, String kakaoNickname,
-//                String kakaoEmail, String userRole) {
-//        this.kakaoId = kakaoId;
-//        this.kakaoProfileImg = kakaoProfileImg;
-//        this.kakaoNickname = kakaoNickname;
-//        this.kakaoEmail = kakaoEmail;
-//        this.userRole = userRole;
-//    }
+    @Builder
+    public KakaoUser(Long kakaoId, String kakaoProfileImg, String kakaoNickname,
+                     String kakaoEmail, String userRole) {
+        this.kakaoId = kakaoId;
+        this.kakaoProfileImg = kakaoProfileImg;
+        this.kakaoNickname = kakaoNickname;
+        this.kakaoEmail = kakaoEmail;
+        this.userRole = userRole;
+    }
 
 }
