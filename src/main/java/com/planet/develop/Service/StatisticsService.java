@@ -1,7 +1,8 @@
 package com.planet.develop.Service;
 
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.EcoEnum;
-import com.planet.develop.Login.Model.User;
+import com.planet.develop.Login.Model.KakaoUser;
 import com.planet.develop.Repository.StatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.*;
 public class StatisticsService {
     private final StatisticsRepository statisticsRepository;
 
-    public Map<Integer,Long> getYearEcoCount(User user,EcoEnum eco,int year){
+    public Map<Integer,Long> getYearEcoCount(User user, EcoEnum eco, int year){
         Map<Integer,Long> result=new HashMap<>();
         for(int n=1;n<=12;n++){
             Long monthEcoCount=getMonthEcoCount(user,eco,year,n);
@@ -25,12 +26,12 @@ public class StatisticsService {
     }
 
 
-    public Long getMonthEcoCount(User user,EcoEnum eco,int year,int month){
+    public Long getMonthEcoCount(User user, EcoEnum eco, int year, int month){
         Long monthEcoCount = statisticsRepository.getMonthEcoCount(user, eco,year, month);
         return monthEcoCount;
     }
 
-    public Long getGuessMonthEcoCount(User user,int year,int month,int day){
+    public Long getGuessMonthEcoCount(User user, int year, int month, int day){
         LocalDate startDate = LocalDate.of(year,month,day);
         LocalDate endDate = LocalDate.of(year,month,startDate.lengthOfMonth());
         Long nowEcoCount = statisticsRepository.getNowEcoCount(user,LocalDate.of(year, month, 1),startDate,EcoEnum.G);
@@ -50,7 +51,7 @@ public class StatisticsService {
         return avg+nowEcoCount;
     }
 
-    public Map<String,Object> getEcoCountComparedToLast(User user,int year,int month){
+    public Map<String,Object> getEcoCountComparedToLast(User user, int year, int month){
         Map<String, Object> eco = new HashMap<>();
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate=LocalDate.now();
@@ -125,7 +126,7 @@ public class StatisticsService {
         return result;
     }
 
-    public List<Object[]> getTagCategoryList(User user,int year,int month,EcoEnum ecoEnum){
+    public List<Object[]> getTagCategoryList(User user, int year, int month, EcoEnum ecoEnum){
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate=LocalDate.of(year, month, startDate.lengthOfMonth());
         List<Object[]> categoryList= statisticsRepository.getCategoryList(user, startDate, endDate,ecoEnum);

@@ -2,9 +2,10 @@ package com.planet.develop.Service;
 
 import com.planet.develop.DTO.IncomeRequestDto;
 import com.planet.develop.Entity.Income;
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;
-import com.planet.develop.Login.Model.User;
+import com.planet.develop.Login.Model.KakaoUser;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,7 +49,7 @@ public interface IncomeService {
 
     default Income dtoToEntity(IncomeRequestDto dto) {
         User user = User.builder()
-                .kakaoEmail(dto.getUserId())
+                .userId(dto.getUserId())
                 .build();
         Income income = Income.builder()
                 .in_cost(dto.getIn_cost())

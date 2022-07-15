@@ -1,9 +1,9 @@
 package com.planet.develop.Service;
 
 import com.planet.develop.DTO.*;
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.TIE;
-import com.planet.develop.Login.Model.User;
-import com.planet.develop.Login.Repository.UserRepository;
+import com.planet.develop.Repository.UserRepository;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class StatisticsDetailServiceImpl implements StatisticsDetailService {
     @Override
     public CalendarDto totalMonthDay(String id, int year, int month, int day) {
         Long totalMonthIncome = incomeService.totalMonthDay(id, month, day); // 총 수입
-        User user = userRepository.findByKakaoEmail(id);
+        User user = userRepository.findById(id).get();
         Long totalMonthExpenditure = expenditureDetailService.totalMonthDay(user, year, month, day); // 총 지출
         return new CalendarDto(totalMonthIncome,totalMonthExpenditure);
     }
@@ -124,7 +124,7 @@ public class StatisticsDetailServiceImpl implements StatisticsDetailService {
     /** 지출 페이지 */
     @Override
     public StatisticsEcoDto functionEcoByMonth(String id, int year, int month) {
-        User user = userRepository.findByKakaoEmail(id);
+        User user = userRepository.findById(id).get();
         Long totalExpenditure = expenditureDetailService.totalMonth(user, year, month); // 판 달 지출 총액
 
         int lastDayOfMonth = LocalDate.of(year, month, month).lengthOfMonth(); // 조회 달 마지막 날짜

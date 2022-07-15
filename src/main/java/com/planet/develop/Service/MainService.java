@@ -1,7 +1,7 @@
 package com.planet.develop.Service;
 
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.EcoEnum;
-import com.planet.develop.Login.Model.User;
 import com.planet.develop.Repository.StatisticsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
