@@ -3,12 +3,14 @@ package com.planet.develop.Login.Config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true) // POST 관련
 @EnableWebSecurity // 기본적인 Web 보안을 활성화함.
 public class SecurityConfig extends WebSecurityConfigurerAdapter { // 추가적인 웹 설정을 위해 상속
 
@@ -22,7 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // 추가적�
                 .addFilter(corsConfig.corsFilter()) // corsConfig 등록
                 .authorizeRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근 제한 설정
                 .antMatchers("/oauth/token", "/api/**").permitAll() // "/oauth/token"에 대한 접근 권한은 인증 없이 접근 허용 -> CORS 문제 해결
-                .anyRequest().authenticated(); // 나머지 요청에 대해서는 인증을 받아야 한다.
+                .anyRequest().permitAll();
+//                .anyRequest().authenticated(); // 나머지 요청에 대해서는 인증을 받아야 한다.
     }
 
 }

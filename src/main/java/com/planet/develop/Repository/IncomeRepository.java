@@ -1,7 +1,7 @@
 package com.planet.develop.Repository;
 
 import com.planet.develop.Entity.Income;
-import com.planet.develop.Login.Model.User;
+import com.planet.develop.Entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +28,7 @@ public class IncomeRepository {
 
     public List<Income> findDay(User user, LocalDate date){
         return em.createQuery("select u from Income u where u.user= :user and u.date= :date", Income.class)
-                .setParameter("user",user)
+                .setParameter("user", user)
                 .setParameter("date",date)
                 .getResultList();
     }
@@ -40,7 +40,7 @@ public class IncomeRepository {
         LocalDate endDate = LocalDate.of(2022,month,startDate.lengthOfMonth());
 
         return em.createQuery("select u from Income u where u.user= :user and :startDate<=u.date and u.date <= :endDate", Income.class)
-                .setParameter("user",user)
+                .setParameter("user", user)
                 .setParameter("startDate",startDate)
                 .setParameter("endDate",endDate)
                 .getResultList();
@@ -53,13 +53,13 @@ public class IncomeRepository {
         LocalDate endDate = LocalDate.of(2022,month,day);
 
         return em.createQuery("select u from Income u where u.user= :user and :startDate<=u.date and u.date <= :endDate", Income.class)
-                .setParameter("user",user)
+                .setParameter("user", user)
                 .setParameter("startDate",startDate)
                 .setParameter("endDate",endDate)
                 .getResultList();
     }
 
-    public Long calMonth(User user,int year,int month){
+    public Long calMonth(User user, int year, int month){
         LocalDate startDate = LocalDate.of(year,month,1);
         LocalDate endDate = LocalDate.of(year,month,startDate.lengthOfMonth());
 

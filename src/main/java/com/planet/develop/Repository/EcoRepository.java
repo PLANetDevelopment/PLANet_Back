@@ -21,7 +21,7 @@ public interface EcoRepository extends JpaRepository<Eco, Long> {
     @Query("select e.eno, e.date, e.cost, eco.expenditure.eno, eco.eco from Expenditure e " +
             "left join ExpenditureDetail ed on e.eno = ed.eno " +
             "left join Eco eco on eco.expenditure.eno = ed.eno " +
-            "where e.user.kakaoEmail = :user and e.date = :date and eco.eco = :eco")
+            "where e.user.userId = :user and e.date = :date and eco.eco = :eco")
     List<Object[]> getListByEco(@Param("user") String user, @Param("date") LocalDate date, @Param("eco") EcoEnum eco);
 
 }
