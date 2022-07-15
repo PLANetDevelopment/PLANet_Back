@@ -2,11 +2,13 @@ package com.planet.develop.Controller;
 
 import com.planet.develop.DTO.StatisticsDto;
 import com.planet.develop.DTO.StatisticsEcoDto;
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Enum.TIE;
 import com.planet.develop.Login.JWT.JwtProperties;
-import com.planet.develop.Login.Model.User;
-import com.planet.develop.Login.Repository.UserRepository;
+import com.planet.develop.Login.Model.KakaoUser;
+import com.planet.develop.Login.Repository.KakaoUserRepository;
+import com.planet.develop.Repository.UserRepository;
 import com.planet.develop.Service.ExpenditureDetailService;
 import com.planet.develop.Service.IncomeService;
 import com.planet.develop.Service.StatisticsDetailService;
@@ -33,9 +35,9 @@ public class StatisticsController {
     private final ExpenditureDetailService expenditureDetailService;
 
     /** 친/반환경 태그 통계 */
-    @GetMapping("/statistics/{id}/{year}/{month}/{day}")
-    public Result statistics(@PathVariable("id") String id, @PathVariable("year") int year, @PathVariable("month") int month,@PathVariable("day") int day){
-        User user = userRepository.findByKakaoEmail(id);
+    @GetMapping("/statistics/{year}/{month}/{day}")
+    public Result statistics(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month,@PathVariable("day") int day){
+        User user = userRepository.findById(userId).get();
         Long incomeTotal = incomeService.totalMonth(user,year, month);
         Long expenditureTotal = expenditureDetailService.totalMonth(user,year,month);
         Map<String,Object> ecoBoard = statisticsService.getEcoCountComparedToLast(user,year,month);
@@ -56,7 +58,7 @@ public class StatisticsController {
     /** 친환경 태그 통계 */
     @GetMapping("/statistics/ecoCountsDetail/{year}/{month}")
     public statisticsEcoRequestDto statisticsEcoDetail(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month) {
-        User user = userRepository.findByKakaoEmail(userId);
+        User user = userRepository.findById(userId).get();
         List<Object[]> tagCategoryList = statisticsService.getTagCategoryList(user, year, month, EcoEnum.G);
 
         return new statisticsEcoRequestDto(tagCategoryList);
@@ -65,7 +67,7 @@ public class StatisticsController {
     /** 반환경 태그 통계 */
     @GetMapping("/statistics/noEcoCountsDetail/{year}/{month}")
     public statisticsEcoRequestDto statisticsNoEcoDetail(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year,@PathVariable("month") int month) {
-        User user = userRepository.findByKakaoEmail(userId);
+        User user = userRepository.findById(userId).get();
         List<Object[]> tagCategoryList = statisticsService.getTagCategoryList(user, year, month, EcoEnum.R);
         return new statisticsEcoRequestDto(tagCategoryList);
     }

@@ -3,10 +3,12 @@ package com.planet.develop.Controller;
 import com.planet.develop.DTO.MissionCompleteDto;
 import com.planet.develop.Entity.Mission;
 import com.planet.develop.Entity.MissionComplete;
+import com.planet.develop.Entity.User;
 import com.planet.develop.Login.JWT.JwtProperties;
-import com.planet.develop.Login.Model.User;
-import com.planet.develop.Login.Repository.UserRepository;
+import com.planet.develop.Login.Model.KakaoUser;
+import com.planet.develop.Login.Repository.KakaoUserRepository;
 import com.planet.develop.Repository.MissionRepository;
+import com.planet.develop.Repository.UserRepository;
 import com.planet.develop.Service.MissionCompleteService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,13 +26,14 @@ import java.util.stream.Collectors;
 @RestController
 public class MissionController {
     private final UserRepository userRepository;
+    private final KakaoUserRepository kakaoUserRepository;
     private final MissionCompleteService missionCompleteService;
     private final MissionRepository missionRepository;
 
     /** 에코미션 데이터 저장*/
     @PostMapping("/mission/{emoji}/{name}")
     public void main(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("emoji") String emoji, @PathVariable("name")String name){
-        User user = userRepository.findByKakaoEmail(userId);
+        User user = userRepository.findById(userId).get();
         MissionComplete mission = MissionComplete.builder()
                 .emoji(emoji)
                 .name(name)
@@ -56,11 +59,11 @@ public class MissionController {
     /** 에코미션 페이지 조회*/
     @GetMapping("/mission/{year}/{month}")
     public Result mission(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month){
-        User user = userRepository.findByKakaoEmail(userId);
+        KakaoUser kakaoUser = kakaoUserRepository.findByKakaoEmail(userId);
         Mission mission = missionRepository.findMission(LocalDate.now());
         MissionCompleteDto todayMission = new MissionCompleteDto(mission.getName(),mission.getEmoji());
 
-        List<MissionComplete> missions = missionCompleteService.findMissions(user,year,month);
+        List<MissionComplete> missions = missionCompleteService.findMissions(kakaoUser,year,month);
         List<MissionCompleteDto> missionCompleteDtos = missions.stream()
                 .map(o->new MissionCompleteDto(o.getName(),o.getEmoji()))
                 .collect(Collectors.toList());

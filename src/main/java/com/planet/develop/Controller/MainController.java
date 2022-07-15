@@ -1,8 +1,9 @@
 package com.planet.develop.Controller;
 
+import com.planet.develop.Entity.User;
 import com.planet.develop.Login.JWT.JwtProperties;
-import com.planet.develop.Login.Model.User;
-import com.planet.develop.Login.Repository.UserRepository;
+import com.planet.develop.Login.Repository.KakaoUserRepository;
+import com.planet.develop.Repository.UserRepository;
 import com.planet.develop.Service.ExpenditureDetailService;
 import com.planet.develop.Service.IncomeService;
 import com.planet.develop.Service.MainService;
@@ -11,20 +12,21 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
 //@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 @RestController
 public class MainController {
     private final UserRepository userRepository;
+    private final KakaoUserRepository kakaoUserRepository;
     private final IncomeService incomeService;
     private final ExpenditureDetailService expenditureDetailService;
     private final MainService mainService;
 
     @GetMapping("/main/{year}/{month}")
     public mainResponseDto main(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month){
-        User user = userRepository.findByKakaoEmail(userId);
+        User user = userRepository.findById(userId).get();
         String userName = user.getNickname();
         Long totalMonthIncome = incomeService.totalMonth(user,year,month);
         Long totalMonthExpenditure = expenditureDetailService.totalMonth(user,year, month);

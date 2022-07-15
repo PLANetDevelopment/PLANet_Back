@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
 //@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
