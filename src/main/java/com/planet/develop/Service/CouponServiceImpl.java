@@ -4,11 +4,12 @@ import com.planet.develop.DTO.CouponDetailDto;
 import com.planet.develop.DTO.CouponDto;
 import com.planet.develop.DTO.CouponListDto;
 import com.planet.develop.Entity.*;
-import com.planet.develop.Login.Model.User;
-import com.planet.develop.Login.Repository.UserRepository;
+import com.planet.develop.Login.Model.KakaoUser;
+import com.planet.develop.Login.Repository.KakaoUserRepository;
 import com.planet.develop.Repository.CouponDetailRepository;
 import com.planet.develop.Repository.CouponRepository;
 import com.planet.develop.Repository.CouponStorageRepository;
+import com.planet.develop.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class CouponServiceImpl implements CouponService {
     private final CouponDetailRepository detailRepository;
     private final CouponStorageRepository storageRepository;
     private final UserRepository userRepository;
+    private final KakaoUserRepository kakaoUserRepository;
 
     /** 사용자 쿠폰 리스트 조회 */
     @Override
@@ -65,7 +67,7 @@ public class CouponServiceImpl implements CouponService {
         detailRepository.save(couponDetail);
         // 쿠폰 테이블에 쿠폰 정보 저장하기
         Coupon coupon = new Coupon().couponStorageToCoupon(couponStorage); // CouponStorage -> Coupon 변환
-        User user = userRepository.findByKakaoEmail(id);
+        User user = userRepository.findById(id).get();
         CouponDetail detail = detailRepository.findById(cno).get();
         coupon.setUser(user); coupon.setCouponDetail(detail);
         couponRepository.save(coupon);

@@ -2,13 +2,13 @@ package com.planet.develop.Service;
 
 import com.planet.develop.DTO.*;
 import com.planet.develop.Entity.Income;
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Enum.TIE;
 import com.planet.develop.Enum.money_Type;
-import com.planet.develop.Login.Model.User;
-import com.planet.develop.Login.Repository.UserRepository;
 import com.planet.develop.Repository.AnniversaryRepository;
 import com.planet.develop.Repository.ExpenditureRepository;
+import com.planet.develop.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class CalendarServiceImpl implements CalendarService {
     /** 1일-31일 동안 하루 지출/수입/eco_count */
     @Override
     public CalendarDto findCalendar(String id, int year, int month) {
-        User user = userRepository.findByKakaoEmail(id);
+        User user = userRepository.findById(id).get();
         Long totalMonthIncome = incomeService.totalMonth(user,year,month); // 한 달 총 수입
         Long totalMonthExpenditure = expenditureDetailService.totalMonth(user, year, month); // 한 달 총 지출
         List<CalendarDayDto> calendarDayDtos = new ArrayList<>();
@@ -58,7 +58,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     /** 유형별 하루 지출/수입 상세 */
     public Result findDayExTypeDetail(String id, int year,int month, int day) {
-        User user = userRepository.findByKakaoEmail(id);
+        User user = userRepository.findById(id).get();
         List<Income> in_days = incomeService.findDay(id, LocalDate.of(year, month, day));
         List<ExpenditureTypeDetailDto> ex_days = expenditureDetailService.findDay(user, LocalDate.of(year, month, day));
         String content = anniversaryRepository.getAnniversary(year, month, day);
@@ -102,7 +102,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public List<TypeDetailDto> inExTypeDetailDto(String id, int month, int day, TIE tie) {
-        User user = userRepository.findByKakaoEmail(id);
+        User user = userRepository.findById(id).get();
         List<Income> in_days = new ArrayList<>();
         List<ExpenditureTypeDetailDto> ex_days = new ArrayList<>();
         if (tie == TIE.I) {

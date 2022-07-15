@@ -1,8 +1,8 @@
 package com.planet.develop.Repository;
 
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Enum.money_Type;
-import com.planet.develop.Login.Model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,7 +23,7 @@ public class StatisticsRepository {
                 "left join ExpenditureDetail ed on ec.expenditure.eno = ed.eno " +
                 "left join Expenditure e on e.eno = ed.eno " +
                 "where e.user = :user and ec.eco = :eco and :startDate<=e.date and e.date <= :endDate", Long.class)
-                .setParameter("user",user)
+                .setParameter("user", user)
                 .setParameter("eco",eco)
                 .setParameter("startDate",startDate)
                 .setParameter("endDate",endDate)
@@ -31,7 +31,7 @@ public class StatisticsRepository {
     }
 
     /** 현재 달의 (구체적인 시작점)친환경 태그 개수 구하기*/
-    public Long getNowEcoCount(User user,LocalDate startDate,LocalDate endDate,EcoEnum eco) {
+    public Long getNowEcoCount(User user, LocalDate startDate, LocalDate endDate, EcoEnum eco) {
         return em.createQuery("select count(*) from Eco ec " +
                 "left join ExpenditureDetail ed on ec.expenditure.eno = ed.eno " +
                 "left join Expenditure e on e.eno = ed.eno " +
@@ -44,7 +44,7 @@ public class StatisticsRepository {
     }
 
     /** 현재 달이 아닌 친환경 태그 개수 구하기*/
-    public Long getLastEcoCount(User user, LocalDate last,LocalDate startDate,EcoEnum eco) {
+    public Long getLastEcoCount(User user, LocalDate last, LocalDate startDate, EcoEnum eco) {
         return em.createQuery("select count(*) from Eco ec " +
                 "left join ExpenditureDetail ed on ec.expenditure.eno = ed.eno " +
                 "left join Expenditure e on e.eno = ed.eno " +
@@ -75,7 +75,7 @@ public class StatisticsRepository {
     }
 
     /** 카테고리/친(반)환경 태그별 태그 개수 구하기*/
-    public Long getCategoryTagCount(User user, LocalDate startDate, LocalDate endDate, money_Type type,EcoEnum eco){
+    public Long getCategoryTagCount(User user, LocalDate startDate, LocalDate endDate, money_Type type, EcoEnum eco){
         return em.createQuery("select count(*) from Expenditure e " +
                 "left join ExpenditureDetail ed on e.eno = ed.eno " +
                 "left join Eco ec on e.eno = ec.eno " +

@@ -4,9 +4,10 @@ import com.planet.develop.DTO.ExpenditureTypeDetailDto;
 import com.planet.develop.DTO.ExpenditureRequestDto;
 import com.planet.develop.Entity.Expenditure;
 import com.planet.develop.Entity.ExpenditureDetail;
+import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;
-import com.planet.develop.Login.Model.User;
+import com.planet.develop.Login.Model.KakaoUser;
 
 import java.time.LocalDate;
 import java.util.List;
