@@ -2,7 +2,6 @@ package com.planet.develop.Controller;
 
 import com.planet.develop.Entity.User;
 import com.planet.develop.Login.JWT.JwtProperties;
-import com.planet.develop.Login.Repository.KakaoUserRepository;
 import com.planet.develop.Repository.UserRepository;
 import com.planet.develop.Service.ExpenditureDetailService;
 import com.planet.develop.Service.IncomeService;
@@ -12,14 +11,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
+//@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
 //@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 @RestController
 public class MainController {
     private final UserRepository userRepository;
-    private final KakaoUserRepository kakaoUserRepository;
     private final IncomeService incomeService;
     private final ExpenditureDetailService expenditureDetailService;
     private final MainService mainService;
@@ -34,8 +32,8 @@ public class MainController {
         return new mainResponseDto(userName,totalMonthIncome,totalMonthExpenditure,ecoPercentage,100-ecoPercentage);
     }
 
-    @PostMapping("/main/update")
-    public void mainNameUpdate(@RequestHeader(JwtProperties.USER_ID) String userId, @RequestParam String userName){
+    @PostMapping("/main/update/{userName}")
+    public void mainNameUpdate(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("userName") String userName) {
         userRepository.updateName(userId, userName);
     }
 

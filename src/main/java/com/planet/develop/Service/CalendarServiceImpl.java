@@ -57,7 +57,7 @@ public class CalendarServiceImpl implements CalendarService {
     }
 
     /** 유형별 하루 지출/수입 상세 */
-    public Result findDayExTypeDetail(String id, int year,int month, int day) {
+    public Result findDayExTypeDetail(String id, int year, int month, int day) {
         User user = userRepository.findById(id).get();
         List<Income> in_days = incomeService.findDay(id, LocalDate.of(year, month, day));
         List<ExpenditureTypeDetailDto> ex_days = expenditureDetailService.findDay(user, LocalDate.of(year, month, day));
@@ -73,20 +73,18 @@ public class CalendarServiceImpl implements CalendarService {
             for (TypeDetailDto typeDetailDto : value) {
                 boolean income = typeDetailDto.isIncome();
                 Long now=0L;
-                if (income)
+                if (income) // 수입이면 +
                     now+=typeDetailDto.getCost();
-                else
+                else // 지출이면 -
                     now-=typeDetailDto.getCost();
-                if (moneyTotal.containsKey(typeDetailDto.getType())) {
+                if (moneyTotal.containsKey(typeDetailDto.getType())) { // key가 이미 map에 존재한다면
                     Long sum = moneyTotal.get(typeDetailDto.getType())+now;
                     moneyTotal.replace(typeDetailDto.getType(), sum);
-                } else {
+                } else { // key가 map에 존재하지 않는다면
                     moneyTotal.put(typeDetailDto.getType(), now);
                 }
-
             }
         }
-
         return new Result(moneyTotal,total,content);
     }
 

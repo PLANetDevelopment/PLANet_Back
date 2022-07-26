@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Getter @Setter
@@ -50,6 +51,13 @@ public class Coupon {
 
     public void update(int remainingDays) {
         this.remainingDays = remainingDays;
+    }
+
+    public void calculRemainingDays() {
+        LocalDate startDate = LocalDate.now();
+        LocalDate endDate = this.endDate;
+        long until = startDate.until(endDate, ChronoUnit.DAYS);
+        this.remainingDays = (int) until;
     }
 
     /** 생성자 */

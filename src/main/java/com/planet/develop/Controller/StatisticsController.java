@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 //@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
@@ -52,7 +52,9 @@ public class StatisticsController {
         Object nowNoneEcoCount=ecoBoard.get("noneEcoCount");
         List<Object[]> ecoTagCounts=fiveTagCounts.get(0);
         List<Object[]> noEcoTagCounts=fiveTagCounts.get(1);
-        return new Result(user.getNickname(),incomeTotal,expenditureTotal,ecoDifference,noEcoDifference,ecoCount,nowEcoCount,nowNoneEcoCount,percentage,ecoTagCounts,noEcoTagCounts);
+        Result result = new Result(user.getNickname(), incomeTotal, expenditureTotal, ecoDifference, noEcoDifference, ecoCount, nowEcoCount, nowNoneEcoCount, percentage, ecoTagCounts, noEcoTagCounts);
+        System.out.println(result.toString());
+        return result;
     }
 
     /** 친환경 태그 통계 */

@@ -30,7 +30,6 @@ public class CouponServiceImpl implements CouponService {
     private final CouponDetailRepository detailRepository;
     private final CouponStorageRepository storageRepository;
     private final UserRepository userRepository;
-    private final KakaoUserRepository kakaoUserRepository;
 
     /** 사용자 쿠폰 리스트 조회 */
     @Override
@@ -70,6 +69,7 @@ public class CouponServiceImpl implements CouponService {
         User user = userRepository.findById(id).get();
         CouponDetail detail = detailRepository.findById(cno).get();
         coupon.setUser(user); coupon.setCouponDetail(detail);
+        coupon.calculRemainingDays();
         couponRepository.save(coupon);
     }
 

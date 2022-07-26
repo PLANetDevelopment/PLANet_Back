@@ -13,7 +13,7 @@ import com.planet.develop.Service.ExpenditureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
+//@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
 //@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
@@ -48,7 +48,7 @@ public class ExpenditureController {
     }
 
     /** 지출 데이터 삭제 */
-    @DeleteMapping("calendar/{month}/expenditure/{id}")
+    @DeleteMapping("/calendar/{month}/expenditure/{id}")
     public void delete_income(@PathVariable("id") Long id){
         detailService.delete(id);
     }

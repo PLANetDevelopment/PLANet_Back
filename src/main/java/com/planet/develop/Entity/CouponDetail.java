@@ -24,6 +24,7 @@ public class CouponDetail {
     /** 생성자 */
     public CouponDetail(String cno, String usageInfo, String couponInfo, String detailInfo) {
         this.cno = cno;
+        this.startDate = LocalDate.now();
         this.usageInfo = usageInfo;
         this.couponInfo = couponInfo;
         this.detailInfo = detailInfo;

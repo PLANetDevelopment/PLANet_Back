@@ -6,7 +6,7 @@ import com.planet.develop.Service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
+//@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
 //@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
@@ -33,8 +33,8 @@ public class CouponController {
 //    }
 
     /** 쿠폰 등록 페이지 */
-    @PostMapping("/coupon/register")
-    public String couponRegister(@RequestHeader(JwtProperties.USER_ID) String userId, @RequestParam("cno") String cno) {
+    @PostMapping("/coupon/register/{cno}")
+    public String couponRegister(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("cno") String cno) {
         couponService.couponRegister(userId, cno);
         return cno;
     }
@@ -48,8 +48,8 @@ public class CouponController {
 //    }
 
     /** 쿠폰 사용 */
-    @PostMapping("/coupon/use")
-    public String useCoupon(@RequestParam("cno") String cno) throws IllegalAccessException {
+    @PostMapping("/coupon/use/{cno}")
+    public String useCoupon(@PathVariable("cno") String cno) throws IllegalAccessException {
         couponService.useCoupon(cno);
         return "쿠폰 사용 완료";
     }
