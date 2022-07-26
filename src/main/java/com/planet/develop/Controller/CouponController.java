@@ -6,8 +6,6 @@ import com.planet.develop.Service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin(origins = "localhost:3000", allowedHeaders = {"POST", "GET", "PATCH"})
-//@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 @RestController

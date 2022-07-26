@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "https://main.d2f9fwhj50mv28.amplifyapp.com")
 @RestController
 public class UserController {
 
@@ -30,6 +31,9 @@ public class UserController {
 
         // 발급 받은 accessToken 으로 카카오 회원 정보 DB 저장 후 JWT 를 생성
         String jwtToken = kakaoUserService.saveUserAndGetToken(oauthToken.getAccess_token());
+
+        System.out.println("JWT 토큰");
+        System.out.println(jwtToken);
 
         // 응답 헤더의 Authorization 항목에 JWT를 넣음
         HttpHeaders headers = new HttpHeaders();

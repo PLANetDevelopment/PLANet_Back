@@ -35,7 +35,6 @@ public class KakaoUserService {
         // Http 통신에 유용한 클래스
         RestTemplate rt = new RestTemplate();
 
-//        rt.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
         rt.setErrorHandler(new DefaultResponseErrorHandler() {
             public boolean hasError(ClientHttpResponse response) throws IOException {
                 HttpStatus status = response.getStatusCode();
@@ -49,6 +48,7 @@ public class KakaoUserService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "30e5410f7f73eeb781a471522f30d2a6");
+//        params.add("redirect_uri", "https://main.d2f9fwhj50mv28.amplifyapp.com/oauth");
         params.add("redirect_uri", "http://localhost:3000/oauth");
         params.add("code", code);
         params.add("client_secret", "fm0QlhjRTs8XDMaBjkECXApaTt65NWgV");

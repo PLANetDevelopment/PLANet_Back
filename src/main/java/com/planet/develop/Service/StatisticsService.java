@@ -55,15 +55,20 @@ public class StatisticsService {
         Map<String, Object> eco = new HashMap<>();
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate=LocalDate.now();
-        if(endDate.getMonthValue()!=month)
+        if(endDate.getMonthValue()!=month) // 현재 달이 요청한 달이 아니라면
             endDate = LocalDate.of(year,month,startDate.lengthOfMonth());
 
         LocalDate last=endDate.minusMonths(1);
 
         Long ecoCount=statisticsRepository.getNowEcoCount(user, endDate, startDate,EcoEnum.G);
+        System.out.println("현재 달 친환경 태그 개수: " + ecoCount);
         Long noneEcoCount=statisticsRepository.getNowEcoCount(user, endDate, startDate,EcoEnum.R);
+        System.out.println("현재 달 반환경 태그 개수: " + noneEcoCount);
         Long lastEcoCount=statisticsRepository.getLastEcoCount(user,last,startDate.minusMonths(1),EcoEnum.G);
+        System.out.println("현재 달이 아닌 친환경 태그 개수: " + ecoCount);
         Long lastNoEcoCount=statisticsRepository.getLastEcoCount(user,last,startDate.minusMonths(1),EcoEnum.R);
+        System.out.println("현재 달이 아닌 반환경 태그 개수: " + ecoCount);
+
         Long ecoDifference = ecoCount-lastEcoCount;
         Long noEcoDifference = noneEcoCount - lastNoEcoCount;
         double percentage = getPercentage(ecoCount, noneEcoCount);

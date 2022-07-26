@@ -15,7 +15,8 @@ import java.time.LocalDate;
 @Entity
 public class Income extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="ino")
     private Long id;
 
