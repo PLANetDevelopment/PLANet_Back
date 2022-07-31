@@ -1,5 +1,6 @@
 package com.planet.develop.Controller;
 
+import com.planet.develop.DTO.GuessEcoCountDto;
 import com.planet.develop.DTO.StatisticsDto;
 import com.planet.develop.DTO.StatisticsEcoDto;
 import com.planet.develop.Entity.User;
@@ -36,12 +37,16 @@ public class StatisticsController {
     @GetMapping("/statistics/{year}/{month}/{day}")
     public Result statistics(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month,@PathVariable("day") int day){
         User user = userRepository.findById(userId).get();
-        Long incomeTotal = incomeService.totalMonth(user,year, month);
-        Long expenditureTotal = expenditureDetailService.totalMonth(user,year,month);
-        Map<String,Object> ecoBoard = statisticsService.getEcoCountComparedToLast(user,year,month);
-        Map<Integer, Long> ecoCount = statisticsService.getYearEcoCount(user, EcoEnum.G,year);
-        Long guessCount=statisticsService.getGuessMonthEcoCount(user,year,month,day);
-        ecoCount.replace(month,guessCount);
+        
+        Long incomeTotal = incomeService.totalMonth(user,year, month); // 수입 총합
+        Long expenditureTotal = expenditureDetailService.totalMonth(user,year,month); // 지출 총합
+
+        Map<String,Object> ecoBoard = statisticsService.getEcoCountComparedToLast(user,year,month, day);
+
+        GuessEcoCountDto guessEcoCountDto = statisticsService.getGuessMonthEcoCount(user, year, month, day);
+        Map<Integer, Long> ecoCount = statisticsService.getGuessMonthEcoCount(user, year, month, day).getMonthEcoMap();
+        ecoCount.put(month, guessEcoCountDto.getCurrEcoCount()); // 친환경 개수 예측
+
         List<List<Object[]>> fiveTagCounts = statisticsService.getFiveTagCounts(user, year, month);
         Object ecoDifference = ecoBoard.get("ecoDifference");
         Object noEcoDifference = ecoBoard.get("noEcoDifference");
@@ -51,7 +56,6 @@ public class StatisticsController {
         List<Object[]> ecoTagCounts=fiveTagCounts.get(0);
         List<Object[]> noEcoTagCounts=fiveTagCounts.get(1);
         Result result = new Result(user.getNickname(), incomeTotal, expenditureTotal, ecoDifference, noEcoDifference, ecoCount, nowEcoCount, nowNoneEcoCount, percentage, ecoTagCounts, noEcoTagCounts);
-        System.out.println(result.toString());
         return result;
     }
 
@@ -60,7 +64,6 @@ public class StatisticsController {
     public statisticsEcoRequestDto statisticsEcoDetail(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month) {
         User user = userRepository.findById(userId).get();
         List<Object[]> tagCategoryList = statisticsService.getTagCategoryList(user, year, month, EcoEnum.G);
-
         return new statisticsEcoRequestDto(tagCategoryList);
     }
 

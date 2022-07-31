@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Entity
 @Getter @Setter
 public class Mission {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="mno")
     private Long id;
     private String emoji;

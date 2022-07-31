@@ -1,5 +1,6 @@
 package com.planet.develop.Login.Model;
 
+import com.planet.develop.Entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;

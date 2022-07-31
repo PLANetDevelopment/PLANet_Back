@@ -22,6 +22,12 @@ public interface ExpenditureRepository extends JpaRepository<Expenditure, Long> 
     List<Object[]> tableJoin(@Param("id") Long  id);
 
     /**
+     * 가장 첫 소비 날짜 가져오기
+     */
+    @Query("select min(e.date) from Expenditure e where e.user = :user")
+    LocalDate getFirstDate(@Param("user") User  user);
+
+    /**
      * 특정 사용자의 하루 지출 리스트 가져오기
      */
     @Query("select e.eno, e.cost, ed.exType, ed.exWay, ed.memo, ec.eco, ec.ecoDetail, ec.userAdd, ec.expenditure.eno " +

@@ -18,8 +18,8 @@ public class MainService {
     public double getPercentage(User user, int year, int month){
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = LocalDate.of(year,month,startDate.lengthOfMonth());
-        Long ecoCount=statisticsRepository.getNowEcoCount(user, endDate, startDate, EcoEnum.G);
-        Long noneEcoCount=statisticsRepository.getNowEcoCount(user, endDate, startDate,EcoEnum.R);
+        Long ecoCount= statisticsRepository.getNowEcoCount(user, endDate, startDate, EcoEnum.G);
+        Long noneEcoCount= statisticsRepository.getNowEcoCount(user, endDate, startDate, EcoEnum.R);
         double percentage = statisticsService.getPercentage(ecoCount, noneEcoCount);
         System.out.println("ecoCount = " + ecoCount);
         System.out.println("noneEcoCount = " + noneEcoCount);

@@ -34,17 +34,10 @@ public class CalendarController {
         return new CalendarResponseDto(anniversaryList, calendar, quote.getContent());
     }
 
-    /** 배포용 - 일별 조회 (세부 조회) */
+    /** 일별 조회 (세부 조회) */
     @GetMapping("/calendar/{year}/{month}/{day}")
     public Result findIncomeDetail(@RequestHeader(JwtProperties.USER_ID) String userId,@PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("day") int day){
         return  calendarService.findDayExTypeDetail(userId,year,month,day);
     }
-
-    /** 테스트용 - 일별 조회 (세부 조회) */
-//    @GetMapping("/calendar/{userId}/{year}/{month}/{day}") // localhost:8080/calendar/user1@naver.com/2022/2/20
-//    public Result findIncomeDetail(@PathVariable("userId") String userId, @PathVariable("year") int year, @PathVariable("month") int month, @PathVariable("day") int day){
-//        User user = userRepository.findById(userId).get();
-//        return  calendarService.findDayExTypeDetail(user.getUserId(),year,month,day);
-//    }
 
 }

@@ -18,7 +18,6 @@ public interface IncomeService {
     /** 수입 변경 **/
     public void update(Long income_id, Long in_cost, money_Way in_way, money_Type in_type, String memo, LocalDate date);
 
-
     /** 수입 삭제 **/
     public void delete(Long income_id);
 
