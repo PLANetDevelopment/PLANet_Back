@@ -21,29 +21,12 @@ public class CouponController {
         return couponList;
     }
 
-    /** 쿠폰 리스트 조회 페이지 - 테스트용 */
-//    @GetMapping("/{id}/coupon")
-//    public CouponListDto findCoupon(@PathVariable("id") String id) throws IllegalAccessException {
-//        User user = userRepository.findById(id).get();
-//        couponService.remainingDaysUpdate(userId); // 쿠폰 조회 전 남은 날짜 먼저 업데이트
-//        CouponListDto couponList = couponService.getCouponList(userId);
-//        return couponList;
-//    }
-
     /** 쿠폰 등록 페이지 */
     @PostMapping("/coupon/register/{cno}")
     public String couponRegister(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("cno") String cno) {
         couponService.couponRegister(userId, cno);
         return cno;
     }
-
-    /** 쿠폰 등록 페이지 - 테스트용 */
-//    @PostMapping("/{id}/coupon/register")
-//    public String couponRegister(@PathVariable("id") String id, @RequestParam("cno") String cno) {
-//        User user = userRepository.findById(id).get();
-//        couponService.couponRegister(userId, cno);
-//        return cno;
-//    }
 
     /** 쿠폰 사용 */
     @PostMapping("/coupon/use/{cno}")
