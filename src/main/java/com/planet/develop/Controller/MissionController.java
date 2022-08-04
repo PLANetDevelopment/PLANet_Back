@@ -55,6 +55,14 @@ public class MissionController {
         List<MissionCompleteDto> missionCompleteDtos = missions.stream()
                 .map(o->new MissionCompleteDto(o.getName(),o.getEmoji()))
                 .collect(Collectors.toList());
+
+        if (missions == null) {
+            System.out.println("아직 달성하지 않았어요");
+        } else {
+            System.out.println("달성했어요!");
+        }
+
+
         return new Result(todayMission,missionCompleteDtos);
     }
 
