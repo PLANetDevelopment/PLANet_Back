@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +62,12 @@ public class CouponServiceImpl implements CouponService {
         CouponDetail couponDetail = new CouponDetail().couponStorageToCouponDetail(couponStorage);
         detailRepository.save(couponDetail);
         // 쿠폰 테이블에 쿠폰 정보 저장하기
+
+        boolean checkAlreadyRegistered = couponRepository.existsById(cno);
+        if (checkAlreadyRegistered) { // 이미 등록한 쿠폰이라면
+            return;
+        }
+        // 등록되지 않은 쿠폰이라면
         Coupon coupon = new Coupon().couponStorageToCoupon(couponStorage); // CouponStorage -> Coupon 변환
         User user = userRepository.findById(id).get();
         CouponDetail detail = detailRepository.findById(cno).get();
