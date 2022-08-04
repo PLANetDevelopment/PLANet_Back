@@ -18,8 +18,8 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // 내 서버의 json 응답을 자바스크립트가 처리할 수 있도록
-//        config.addAllowedOrigin("https://main.d2f9fwhj50mv28.amplifyapp.com"); // 해당 ip의 응답을 허용 (프론트엔드)
-        config.addAllowedOrigin("http://localhost:3000"); // 해당 ip의 응답을 허용 (프론트엔드)
+        config.addAllowedOrigin("https://main.d2f9fwhj50mv28.amplifyapp.com"); // 해당 ip의 응답을 허용 (프론트엔드)
+//        config.addAllowedOrigin("http://localhost:3000"); // 해당 ip의 응답을 허용 (프론트엔드)
         config.addAllowedHeader("*"); // 모든 header에 응답을 허용
         config.addAllowedMethod(CorsConfiguration.ALL); // 모든 메소드 요청을 허용
 
