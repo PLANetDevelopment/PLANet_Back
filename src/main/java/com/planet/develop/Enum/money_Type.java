@@ -8,7 +8,7 @@ public enum money_Type {
     @JsonProperty("기타") etc,
     @JsonProperty("식비") food,
     @JsonProperty("교통") traffic,
-    @JsonProperty("문화") culture,
+    @JsonProperty("문화생활") culture,
     @JsonProperty("생필품") daily_necessity,
     @JsonProperty("마트") market,
     @JsonProperty("교육") study,
