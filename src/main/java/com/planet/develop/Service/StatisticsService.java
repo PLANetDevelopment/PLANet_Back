@@ -83,7 +83,7 @@ public class StatisticsService {
                 monthEcoMap.put(i, ecoCount);
                 sum += ecoCount;
             }
-        } else if (checkIsLastYear > 0){ // 올해 데이터로 충분하고 이번달이 첫 소비가 아니라면
+        } else if (checkIsLastYear > 0) { // 올해 데이터로 충분하고 이번달이 첫 소비가 아니라면
             for (int i = last6monthAgo; i < month; i++) {
                 Long ecoCount = getEcoCount(user, year, i);
                 monthEcoMap.put(i, ecoCount);
@@ -95,7 +95,35 @@ public class StatisticsService {
         if (check5MonthOfData != 0) { // 첫 소비 달 == 현재 달인 경우 평균 = 0
             avg = sum / check5MonthOfData; // 평균 계산
         }
+
+        make6monthData(monthEcoMap);
         return new GuessEcoCountDto(monthEcoMap, avg);
+    }
+
+    /** 6개월치 데이터 보내기 */
+    Map<Integer, Long> make6monthData(Map<Integer, Long> ecoMap) {
+
+        if (ecoMap.size() == 5)
+            return ecoMap;
+
+        int month = LocalDate.now().getMonthValue();
+        int tempMonth = month;
+        List<Integer> monthList = new ArrayList<>();
+        for (int i = 1; i < 6; i++) { // 5개월치 달 계산: 만약 현재 3월이라면 -> 2 1 12 11 10
+            if ((month - i) <= 0) {
+                tempMonth = 12 - (i - month);
+            } else
+                tempMonth = month - i;
+            monthList.add(tempMonth);
+        }
+
+        for (int i : monthList) {
+            if (!ecoMap.containsKey(i)) { // 해당 월의 데이터가 없다면
+                ecoMap.put(i, 0L); // 0을 넣는다.
+            }
+        }
+
+        return ecoMap;
     }
 
     /**
@@ -143,6 +171,10 @@ public class StatisticsService {
         Long lastEcoCount = 0l;
         Long lastNoneEcoCount = 0l;
 
+        int lastDayOfMonth = LocalDate.of(year, month, month).lengthOfMonth(); // 조회 달 마지막 날짜
+        int lastDayOfLastMonth = LocalDate.of(year, month-1, month-1).lengthOfMonth(); // 지난 달 마지막 날짜
+        int today = LocalDate.now().getDayOfMonth(); // 오늘 날짜
+
         if(endDate.getMonthValue()!=month) {// 현재 달이 요청한 달이 아니라면
             ecoCount = getEcoCount(user, year, month); // 친환경 개수
             lastEcoCount = getEcoCount(user, year, month - 1); // 저번 달 친환경 개수
@@ -150,18 +182,23 @@ public class StatisticsService {
             lastNoneEcoCount = getNoneEcoCount(user, year, month - 1); // 저번 달 반환경 개수
 
         } else { // 현재 달이 요청한 달이라면
-            ecoCount = getCurrMonthEcoCount(user, year, month, day); // 친환경 개수
-            lastEcoCount = getEcoCount(user, year, month - 1); // 저번 달 친환경 개수
-            noneEcoCount = getCurrMonthNoneEcoCount(user, year, month, day); // 반환경 개수
-            lastNoneEcoCount = getEcoCount(user, year, month - 1); // 저번 달 반환경 개수
+            ecoCount = getCurrMonthEcoCount(user, year, month, day); // 현재 달 친환경 개수
+            noneEcoCount = getCurrMonthNoneEcoCount(user, year, month, day); // 현재 달 반환경 개수
+            if (today > lastDayOfLastMonth) { // 12월 31일에 조회한다면 -> 11월 30일까지 조회해서 비교
+                lastEcoCount = getCurrMonthEcoCount(user, year, month - 1, lastDayOfLastMonth); // 저번 달 친환경 개수
+                lastNoneEcoCount = getCurrMonthNoneEcoCount(user, year, month - 1, lastDayOfLastMonth); // 저번 달 친환경 개수
+            } else  {
+                lastEcoCount = getCurrMonthEcoCount(user, year, month - 1, today);// 12월 15일에 조회한다면 -> 11월 15일까지 조회해서 비교
+                lastNoneEcoCount = getCurrMonthNoneEcoCount(user, year, month - 1, today); // 저번 달 친환경 개수
+            }
         }
 
         LocalDate last=endDate.minusMonths(1);
 
         System.out.println("현재 달 친환경 태그 개수: " + ecoCount);
         System.out.println("현재 달 반환경 태그 개수: " + noneEcoCount);
-        System.out.println("현재 달이 아닌 친환경 태그 개수: " + lastEcoCount);
-        System.out.println("현재 달이 아닌 반환경 태그 개수: " + lastNoneEcoCount);
+        System.out.println("지난 달 " + today + "일까지의 친환경 태그 개수: " + lastEcoCount);
+        System.out.println("지난 달 " + today + "일까지의 반환경 태그 개수: " + lastNoneEcoCount);
 
         Long ecoDifference = ecoCount-lastEcoCount;
         Long noEcoDifference = noneEcoCount - lastNoneEcoCount;
@@ -214,16 +251,21 @@ public class StatisticsService {
         Object eco_remain[]=new Object[2];
         eco_remain[0]="더보기";
 
-        System.out.println("전체 태그 개수: " + ecoCount);
-        System.out.println("상위 4개 태그 개수: " + ecoCnt);
+//        System.out.println("전체 태그 개수: " + ecoCount);
+//        System.out.println("상위 4개 태그 개수: " + ecoCnt);
 
         eco_remain[1] = ecoCount - ecoCnt; // 전체 태그 개수 - 상위 4개 태그 개수
         eco.add(eco_remain);
+
+//        System.out.println("친환경 더보기 태그 개수: " + eco_remain[1]);
+
         eco_remain[1] = noneEcoCount-noEcoCnt;
         noEco.add(eco_remain);
 
-        System.out.println("전체 태그 개수: " + noneEcoCount);
-        System.out.println("상위 4개 태그 개수: " + noEcoCnt);
+//        System.out.println("반환경 더보기 태그 개수: " + eco_remain[1]);
+//
+//        System.out.println("전체 태그 개수: " + noneEcoCount);
+//        System.out.println("상위 4개 태그 개수: " + noEcoCnt);
 
         result.add(eco);
         result.add(noEco);
