@@ -86,6 +86,8 @@ public class StatisticsDetailServiceImpl implements StatisticsDetailService {
         int lastDayOfLastMonth = LocalDate.of(year, month-1, month-1).lengthOfMonth(); // 지난 달 마지막 날짜
         int today = LocalDate.now().getDayOfMonth(); // 오늘 날짜
 
+        System.out.println("오늘 날짜: " + today);
+
         if (month == (int) LocalDate.now().getMonthValue()) { // 조회하는 월이 현재 월이라면
             if (today > lastDayOfLastMonth) { // 12월 31일에 조회한다면 -> 11월 30일까지 조회해서 비교
                 return merge(id, year, month, today, lastDayOfMonth, tie);

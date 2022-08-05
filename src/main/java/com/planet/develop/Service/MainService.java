@@ -18,11 +18,16 @@ public class MainService {
     public double getPercentage(User user, int year, int month){
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = LocalDate.of(year,month,startDate.lengthOfMonth());
-        Long ecoCount= statisticsRepository.getNowEcoCount(user, endDate, startDate, EcoEnum.G);
-        Long noneEcoCount= statisticsRepository.getNowEcoCount(user, endDate, startDate, EcoEnum.R);
+        Long ecoCount= statisticsRepository.getNowEcoCount(user, startDate, endDate, EcoEnum.G);
+        Long noneEcoCount= statisticsRepository.getNowEcoCount(user, startDate, endDate, EcoEnum.R);
+
+        System.out.println("친환경 태그 개수: " + ecoCount);
+        System.out.println("반환경 태그 개수: " + noneEcoCount);
+
         double percentage = statisticsService.getPercentage(ecoCount, noneEcoCount);
-        System.out.println("ecoCount = " + ecoCount);
-        System.out.println("noneEcoCount = " + noneEcoCount);
+
+        System.out.println("퍼센트: " + percentage);
+
         return percentage;
     }
 }

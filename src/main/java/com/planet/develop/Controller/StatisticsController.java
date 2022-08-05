@@ -78,7 +78,6 @@ public class StatisticsController {
     /** 지난 달 대비 수입/지출 차액 + 한 달 일별 상세 내역 페이지 */
     @GetMapping("/statistics/total/{year}/{month}")
     public StatisticsDto findTotalStatistics(@RequestHeader(JwtProperties.USER_ID) String userId,  @PathVariable("year") int year, @PathVariable("month") int month){
-
         return statisticsDetailService.functionByMonth(userId, year, month, TIE.T);
     }
 
