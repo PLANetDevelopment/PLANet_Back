@@ -7,6 +7,7 @@ import com.planet.develop.Entity.User;
 import com.planet.develop.Login.JWT.JwtProperties;
 import com.planet.develop.Login.Model.KakaoUser;
 import com.planet.develop.Login.Repository.KakaoUserRepository;
+import com.planet.develop.Repository.MissionCompleteRepository;
 import com.planet.develop.Repository.MissionRepository;
 import com.planet.develop.Repository.UserRepository;
 import com.planet.develop.Service.MissionCompleteService;
@@ -26,6 +27,7 @@ public class MissionController {
     private final UserRepository userRepository;
     private final MissionCompleteService missionCompleteService;
     private final MissionRepository missionRepository;
+    private final MissionCompleteRepository missionCompleteRepository;
 
     /** 에코미션 데이터 저장 */
     @PostMapping("/mission/{emoji}/{name}")
@@ -37,7 +39,12 @@ public class MissionController {
                 .user(user)
                 .date(LocalDate.now())
                 .build();
-        missionCompleteService.save(mission);
+
+        List<MissionComplete> missionCompletes = missionCompleteRepository.alreadyConpeleted(user);
+        if (missionCompletes.isEmpty()) { // 달성하지 않았다면
+            missionCompleteService.save(mission); // 달성 (db에 저장)
+        } else
+            return;
     }
 
     /** 에코미션 페이지 조회 */

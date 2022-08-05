@@ -21,14 +21,23 @@ public class MissionCompleteRepository {
         em.persist(mission);
     }
 
-    public List<MissionComplete> findMissions(User user, int year, int month){
-        LocalDate startDate = LocalDate.of(2022,month,1);
-        LocalDate endDate = LocalDate.of(2022,month,startDate.lengthOfMonth());
+    public List<MissionComplete> findMissions(User user, int year, int month) {
+        LocalDate startDate = LocalDate.of(2022, month, 1);
+        LocalDate endDate = LocalDate.of(2022, month, startDate.lengthOfMonth());
 
         return em.createQuery("select u from MissionComplete u where u.user= :user and :startDate<=u.date and u.date <= :endDate", MissionComplete.class)
                 .setParameter("user", user)
-                .setParameter("startDate",startDate)
-                .setParameter("endDate",endDate)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .getResultList();
+    }
+
+    public List<MissionComplete> alreadyConpeleted(User user){
+        LocalDate today = LocalDate.now();
+
+        return em.createQuery("select mc from MissionComplete mc where mc.user= :user and mc.date = :today", MissionComplete.class)
+                .setParameter("user", user)
+                .setParameter("today",today)
                 .getResultList();
     }
 
