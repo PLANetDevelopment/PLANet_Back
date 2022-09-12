@@ -1,6 +1,6 @@
 package com.planet.develop.Controller;
 
-import com.planet.develop.DTO.CouponListDto;
+import com.planet.develop.DTO.CouponDto.CouponListDto;
 import com.planet.develop.Login.JWT.JwtProperties;
 import com.planet.develop.Service.CouponService;
 import lombok.RequiredArgsConstructor;

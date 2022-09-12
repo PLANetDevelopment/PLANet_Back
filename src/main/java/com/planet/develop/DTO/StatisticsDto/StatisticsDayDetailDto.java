@@ -1,5 +1,6 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.StatisticsDto;
 
+import com.planet.develop.DTO.ExpenditureDto.TypeDetailDto;
 import com.planet.develop.Entity.BaseEntity;
 import lombok.*;
 

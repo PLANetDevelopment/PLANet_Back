@@ -1,7 +1,7 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.CouponDetailDto;
-import com.planet.develop.DTO.CouponListDto;
+import com.planet.develop.DTO.CouponDto.CouponDetailDto;
+import com.planet.develop.DTO.CouponDto.CouponListDto;
 
 public interface CouponService {
     /** 사용자 쿠폰 리스트 조회 */

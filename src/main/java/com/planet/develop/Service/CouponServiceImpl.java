@@ -1,11 +1,9 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.CouponDetailDto;
-import com.planet.develop.DTO.CouponDto;
-import com.planet.develop.DTO.CouponListDto;
+import com.planet.develop.DTO.CouponDto.CouponDetailDto;
+import com.planet.develop.DTO.CouponDto.CouponDto;
+import com.planet.develop.DTO.CouponDto.CouponListDto;
 import com.planet.develop.Entity.*;
-import com.planet.develop.Login.Model.KakaoUser;
-import com.planet.develop.Login.Repository.KakaoUserRepository;
 import com.planet.develop.Repository.CouponDetailRepository;
 import com.planet.develop.Repository.CouponRepository;
 import com.planet.develop.Repository.CouponStorageRepository;

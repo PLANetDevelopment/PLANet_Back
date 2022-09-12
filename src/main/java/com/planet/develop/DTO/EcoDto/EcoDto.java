@@ -1,4 +1,4 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.EcoDto;
 
 import com.planet.develop.Enum.EcoDetail;
 import com.planet.develop.Enum.EcoEnum;
@@ -12,7 +12,6 @@ import lombok.*;
 public class EcoDto {
     private EcoEnum eco;
     private EcoDetail ecoDetail;
-    // 수정함
     private String userAdd;
 
     public EcoDto(EcoEnum eco, EcoDetail ecoDetial) {

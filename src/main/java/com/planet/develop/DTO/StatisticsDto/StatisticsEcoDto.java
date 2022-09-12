@@ -1,4 +1,4 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.StatisticsDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

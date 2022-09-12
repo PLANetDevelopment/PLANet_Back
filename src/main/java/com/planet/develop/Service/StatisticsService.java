@@ -1,6 +1,6 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.GuessEcoCountDto;
+import com.planet.develop.DTO.EcoDto.GuessEcoCountDto;
 import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Repository.ExpenditureRepository;
@@ -47,16 +47,20 @@ public class StatisticsService {
         Long currMonthEcoCount = getCurrMonthEcoCount(user, year, month, day); // 현재 달 친환경 개수
 
         // 예상치
-        // 만약 현재 달 태그 개수가 평균을 넘겼다면
-        if (currMonthEcoCount >= guessEcoCountDto.getCurrEcoCount()) {
-            if (currentDate.getMonthValue() <= 10) { // 현재 날짜가 10일 전이라면
-                guessEcoCountDto.setCurrEcoCount(guessEcoCountDto.getCurrEcoCount() * 3); // 현재 태그 개수의 3배
-            } else if (currentDate.getMonthValue() <= 20) { // 현재 날짜가 10일 이후, 20일 전이라면
-                guessEcoCountDto.setCurrEcoCount(guessEcoCountDto.getCurrEcoCount() * 2); // 현재 태그 개수의 2배
-            } else {
-                guessEcoCountDto.setCurrEcoCount(guessEcoCountDto.getCurrEcoCount() + 3); // 현재 태그 개수 + 3개
-            }
-        } // 평균을 넘기지 않았다면 평균이 현재 달의 예상치
+        if (guessEcoCountDto.getCurrEcoCount() == 0) { // 현재 달이 소비의 첫 달이라면
+            guessEcoCountDto.setCurrEcoCount(getEcoCount(user, year, month));
+        } else {
+            // 만약 현재 달 태그 개수가 평균을 넘겼다면
+            if (currMonthEcoCount >= guessEcoCountDto.getCurrEcoCount()) {
+                if (currentDate.getMonthValue() <= 10) { // 현재 날짜가 10일 전이라면
+                    guessEcoCountDto.setCurrEcoCount(guessEcoCountDto.getCurrEcoCount() * 3); // 현재 태그 개수의 3배
+                } else if (currentDate.getMonthValue() <= 20) { // 현재 날짜가 10일 이후, 20일 전이라면
+                    guessEcoCountDto.setCurrEcoCount(guessEcoCountDto.getCurrEcoCount() * 2); // 현재 태그 개수의 2배
+                } else {
+                    guessEcoCountDto.setCurrEcoCount(guessEcoCountDto.getCurrEcoCount() + 3); // 현재 태그 개수 + 3개
+                }
+            } // 평균을 넘기지 않았다면 평균이 현재 달의 예상치
+        }
 
 //        guessEcoCountDto.setCurrEcoCount(guessEcoCountDto.getCurrEcoCount() + currMonthEcoCount); // 예상치 = 평균치 + 현재 달 친환경 개수
 
@@ -70,7 +74,6 @@ public class StatisticsService {
         int last6monthAgo = month - check5MonthOfData;
 
         if (check5MonthOfData == 0) { // 이번 달이 첫 소비라면 지난 달을 계산할 필요없음
-            monthEcoMap.put(month - 1, 0L);
         } else if (checkIsLastYear <= 0) { // 작년 데이터까지 필요하다면
             getEcoCount(user, year, month);
             for (int i = (12 + last6monthAgo); i <= 12; i++) { // 작년 친환경 개수 합산
@@ -123,6 +126,8 @@ public class StatisticsService {
             }
         }
 
+        System.out.println("6개월치 데이터 테스트");
+        System.out.println(ecoMap);
         return ecoMap;
     }
 
@@ -195,11 +200,6 @@ public class StatisticsService {
 
         LocalDate last=endDate.minusMonths(1);
 
-        System.out.println("현재 달 친환경 태그 개수: " + ecoCount);
-        System.out.println("현재 달 반환경 태그 개수: " + noneEcoCount);
-        System.out.println("지난 달 " + today + "일까지의 친환경 태그 개수: " + lastEcoCount);
-        System.out.println("지난 달 " + today + "일까지의 반환경 태그 개수: " + lastNoneEcoCount);
-
         Long ecoDifference = ecoCount-lastEcoCount;
         Long noEcoDifference = noneEcoCount - lastNoneEcoCount;
 
@@ -251,25 +251,25 @@ public class StatisticsService {
         Object eco_remain[]=new Object[2];
         eco_remain[0]="더보기";
 
-//        System.out.println("전체 태그 개수: " + ecoCount);
-//        System.out.println("상위 4개 태그 개수: " + ecoCnt);
-
         eco_remain[1] = ecoCount - ecoCnt; // 전체 태그 개수 - 상위 4개 태그 개수
         eco.add(eco_remain);
-
-//        System.out.println("친환경 더보기 태그 개수: " + eco_remain[1]);
 
         eco_remain[1] = noneEcoCount-noEcoCnt;
         noEco.add(eco_remain);
 
-//        System.out.println("반환경 더보기 태그 개수: " + eco_remain[1]);
-//
-//        System.out.println("전체 태그 개수: " + noneEcoCount);
-//        System.out.println("상위 4개 태그 개수: " + noEcoCnt);
-
         result.add(eco);
         result.add(noEco);
         return result;
+    }
+
+    /** 카테고리 개수 - 4 */
+    public int countCategory(User user, int year, int month, EcoEnum eco) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate=LocalDate.of(year, month, startDate.lengthOfMonth());
+        int countExType = expenditureRepository.countExType(user, startDate, endDate, eco);
+        if (countExType <= 4) countExType = 0;
+        else countExType -= 4;
+        return countExType;
     }
 
     public List<Object[]> getTagCategoryList(User user, int year, int month, EcoEnum ecoEnum){

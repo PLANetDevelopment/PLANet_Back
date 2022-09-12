@@ -1,7 +1,7 @@
 package com.planet.develop.Controller;
 
-import com.planet.develop.DTO.IncomeRequestDto;
-import com.planet.develop.DTO.IncomeResponseDto;
+import com.planet.develop.DTO.IncomeDto.IncomeRequestDto;
+import com.planet.develop.DTO.IncomeDto.IncomeResponseDto;
 import com.planet.develop.Login.JWT.JwtProperties;
 import com.planet.develop.Service.IncomeService;
 import lombok.RequiredArgsConstructor;

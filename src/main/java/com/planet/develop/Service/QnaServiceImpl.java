@@ -1,12 +1,10 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.QnaDto;
+import com.planet.develop.DTO.QnaDto.QnaDto;
 import com.planet.develop.Entity.Qna;
 import com.planet.develop.Repository.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

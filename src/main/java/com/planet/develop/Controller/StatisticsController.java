@@ -1,19 +1,17 @@
 package com.planet.develop.Controller;
 
-import com.planet.develop.DTO.GuessEcoCountDto;
-import com.planet.develop.DTO.StatisticsDto;
-import com.planet.develop.DTO.StatisticsEcoDto;
+import com.planet.develop.DTO.EcoDto.GuessEcoCountDto;
+import com.planet.develop.DTO.StatisticsDto.StatisticsCategoryCount;
+import com.planet.develop.DTO.StatisticsDto.StatisticsDto;
+import com.planet.develop.DTO.StatisticsDto.StatisticsEcoCategoryDto;
+import com.planet.develop.DTO.StatisticsDto.StatisticsEcoDto;
 import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Enum.TIE;
+import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Login.JWT.JwtProperties;
-import com.planet.develop.Login.Model.KakaoUser;
-import com.planet.develop.Login.Repository.KakaoUserRepository;
 import com.planet.develop.Repository.UserRepository;
-import com.planet.develop.Service.ExpenditureDetailService;
-import com.planet.develop.Service.IncomeService;
-import com.planet.develop.Service.StatisticsDetailService;
-import com.planet.develop.Service.StatisticsService;
+import com.planet.develop.Service.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +30,7 @@ public class StatisticsController {
     private final IncomeService incomeService;
     private final StatisticsService statisticsService;
     private final ExpenditureDetailService expenditureDetailService;
+    private final EcoService ecoService;
 
     /** 친/반환경 태그 통계 */
     @GetMapping("/statistics/{year}/{month}/{day}")
@@ -47,6 +46,9 @@ public class StatisticsController {
         Map<Integer, Long> ecoCount = statisticsService.getGuessMonthEcoCount(user, year, month, day).getMonthEcoMap();
         ecoCount.put(month, guessEcoCountDto.getCurrEcoCount()); // 친환경 개수 예측
 
+        int count_G_category = statisticsService.countCategory(user, year, month, EcoEnum.G); // 친환경 카테고리 개수 - 4
+        int count_R_category = statisticsService.countCategory(user, year, month, EcoEnum.R); // 반환경 카테고리 개수 - 4
+
         List<List<Object[]>> fiveTagCounts = statisticsService.getFiveTagCounts(user, year, month);
         Object ecoDifference = ecoBoard.get("ecoDifference");
         Object noEcoDifference = ecoBoard.get("noEcoDifference");
@@ -55,7 +57,9 @@ public class StatisticsController {
         Object nowNoneEcoCount=ecoBoard.get("noneEcoCount");
         List<Object[]> ecoTagCounts=fiveTagCounts.get(0);
         List<Object[]> noEcoTagCounts=fiveTagCounts.get(1);
-        Result result = new Result(user.getNickname(), incomeTotal, expenditureTotal, ecoDifference, noEcoDifference, ecoCount, nowEcoCount, nowNoneEcoCount, percentage, ecoTagCounts, noEcoTagCounts);
+        Result result = new Result(user.getNickname(), incomeTotal, expenditureTotal, ecoDifference, noEcoDifference, ecoCount, nowEcoCount, nowNoneEcoCount, percentage, ecoTagCounts, noEcoTagCounts, count_G_category, count_R_category);
+        System.out.println("친환경 태그: " + result.more_G_category);
+        System.out.println("반환경 태그: " + result.more_R_category);
         return result;
     }
 
@@ -105,6 +109,70 @@ public class StatisticsController {
         return statisticsDetailService.functionEcoByMonth(userId, year, month);
     }
 
+    /**
+     * 테스트용 코드 ==========================================================================================
+     */
+
+//    /** 지출 친환경 카테고리에서 '더보기' 또는 '>' 클릭 시 */
+//    @GetMapping("/statistics/expenditure/{year}/{month}/category/ecoG")
+//    public List<StatisticsCategoryCount> findCategoryEcoG(@PathVariable("year") int year, @PathVariable("month") int month) {
+//        String userId = "topjoy22@naver.com";
+//        return statisticsDetailService.countEcoTypeExpenditure(userId, EcoEnum.G, year, month);
+//    }
+//
+//    /** 지출 반환경 카테고리에서 '더보기' 또는 '>' 클릭 시 */
+//    @GetMapping("/statistics/expenditure/{year}/{month}/category/ecoR")
+//    public List<StatisticsCategoryCount> findCategoryEcoR(@PathVariable("year") int year, @PathVariable("month") int month) {
+//        String userId = "topjoy22@naver.com";
+//        return statisticsDetailService.countEcoTypeExpenditure(userId, EcoEnum.R, year, month);
+//    }
+//
+//    /** 친환경 유형별 지출 상세 */
+//    @GetMapping("/statistics/expenditure/{year}/{month}/{category}/ecoG")
+//    public StatisticsEcoCategoryDto findCategoryEcoGDetail(@PathVariable("category") String type, @PathVariable("year") int year, @PathVariable("month") int month) {
+//        String userId = "topjoy22@naver.com";
+//        money_Type exType = money_Type.valueOf(type);
+//        return statisticsDetailService.findMonthExTypeDetail(userId, exType, EcoEnum.G, year, month);
+//    }
+//
+//    /** 반환경 유형별 지출 상세 */
+//    @GetMapping("/statistics/expenditure/{year}/{month}/{category}/ecoR")
+//    public StatisticsEcoCategoryDto findCategoryEcoRDetail(@PathVariable("category") String type, @PathVariable("year") int year, @PathVariable("month") int month) {
+//        String userId = "topjoy22@naver.com";
+//        money_Type exType = money_Type.valueOf(type);
+//        return statisticsDetailService.findMonthExTypeDetail(userId, exType, EcoEnum.R, year, month);
+//    }
+
+    /**
+     * 배포용 코드 ======================================================================================
+     * */
+
+    /** 지출 친환경 카테고리에서 '더보기' 또는 '>' 클릭 시 */
+    @GetMapping("/statistics/expenditure/{year}/{month}/category/ecoG")
+    public List<StatisticsCategoryCount> findCategoryEcoG(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month) {
+        return statisticsDetailService.countEcoTypeExpenditure(userId, EcoEnum.G, year, month);
+    }
+
+    /** 지출 반환경 카테고리에서 '더보기' 또는 '>' 클릭 시 */
+    @GetMapping("/statistics/expenditure/{year}/{month}/category/ecoR")
+    public List<StatisticsCategoryCount> findCategoryEcoN(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("year") int year, @PathVariable("month") int month) {
+        return statisticsDetailService.countEcoTypeExpenditure(userId, EcoEnum.R, year, month);
+    }
+
+    /** 친환경 유형별 지출 상세 */
+    @GetMapping("/statistics/expenditure/{year}/{month}/{category}/ecoG")
+    public StatisticsEcoCategoryDto findCategoryEcoGDetail(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("category") String type, @PathVariable("year") int year, @PathVariable("month") int month) {
+        money_Type exType = money_Type.valueOf(type);
+        return statisticsDetailService.findMonthExTypeDetail(userId, exType, EcoEnum.G, year, month);
+    }
+
+    /** 친환경 유형별 지출 상세 */
+    @GetMapping("/statistics/expenditure/{year}/{month}/{category}/ecoR")
+    public StatisticsEcoCategoryDto findCategoryEcoRDetail(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("category") String type, @PathVariable("year") int year, @PathVariable("month") int month) {
+        money_Type exType = money_Type.valueOf(type);
+        return statisticsDetailService.findMonthExTypeDetail(userId, exType, EcoEnum.R, year, month);
+    }
+
     @Data
     @AllArgsConstructor
     static class Result<T>{
@@ -119,6 +187,8 @@ public class StatisticsController {
         private T percentage;
         private T ecoTagCounts;
         private T noEcoTagCounts;
+        private T more_G_category;
+        private T more_R_category;
     }
 
     @Data

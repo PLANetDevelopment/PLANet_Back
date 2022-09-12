@@ -1,4 +1,4 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.ExpenditureDto;
 
 import com.planet.develop.Enum.EcoDetail;
 import com.planet.develop.Enum.EcoEnum;
@@ -19,12 +19,11 @@ public class ExpenditureTypeDetailDto {
     private String memo; // 메모
     private EcoEnum eco;
     private EcoDetail ecoDetail;
-    private String etcMemo; // 기타메모
-    private Long exEno; // expenditure_eno
+    private String userAdd; // 사용자 추가 태그
+    private Long exEno; // 지출 아이디
 
     public ExpenditureTypeDetailDto(Object eno, Object cost, Object exType, Object exWay,
-                                    Object memo, Object eco, Object ecoDetail,
-                                    Object etcMemo, Object exEno) {
+                                    Object memo, Object eco, Object ecoDetail, Object userAdd, Object exEno) {
         this.eno = (Long) eno;
         this.cost = (Long) cost;
         this.exType = (money_Type) exType;
@@ -32,7 +31,7 @@ public class ExpenditureTypeDetailDto {
         this.memo = (String) memo;
         this.eco = (EcoEnum) eco;
         this.ecoDetail = (EcoDetail) ecoDetail;
-        this.etcMemo = (String) etcMemo;
+        this.userAdd = (String) userAdd;
         this.exEno = (Long) exEno;
     }
 }

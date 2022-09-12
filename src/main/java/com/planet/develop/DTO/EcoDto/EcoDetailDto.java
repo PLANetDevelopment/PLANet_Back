@@ -1,4 +1,4 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.EcoDto;
 
 import com.planet.develop.Enum.EcoEnum;
 import lombok.*;

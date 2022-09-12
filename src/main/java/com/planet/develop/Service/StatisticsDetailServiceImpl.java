@@ -1,8 +1,15 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.*;
+import com.planet.develop.DTO.CalendarDto.CalendarDto;
+import com.planet.develop.DTO.EcoDto.EcoCostDto;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureTypeDetailDto;
+import com.planet.develop.DTO.ExpenditureDto.TypeDetailDto;
+import com.planet.develop.DTO.StatisticsDto.*;
 import com.planet.develop.Entity.User;
+import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Enum.TIE;
+import com.planet.develop.Enum.money_Type;
+import com.planet.develop.Repository.ExpenditureRepository;
 import com.planet.develop.Repository.UserRepository;
 import lombok.*;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +29,7 @@ public class StatisticsDetailServiceImpl implements StatisticsDetailService {
     private final ExpenditureDetailService expenditureDetailService;
     private final EcoService ecoService;
     private final UserRepository userRepository;
+    private final ExpenditureRepository expenditureRepository;
 
     /** 이번 달 지출/수입 총액 계산 + 지날 달 대비 현재 달의 수입/지출 차액 계산 */
     @Override
@@ -138,6 +146,95 @@ public class StatisticsDetailServiceImpl implements StatisticsDetailService {
                 return mergeEco(totalExpenditure, id, year, month, today, lastDayOfLastMonth);
             } else return mergeEco(totalExpenditure, id, year, month, today, today); // 12월 15일에 조회한다면 -> 11월 15일까지 조회해서 비교
         } else return mergeEco(totalExpenditure, id, year, month, lastDayOfMonth, lastDayOfLastMonth); // 조회하는 월이 현재 월이 아니라면 지난 달 총 수입/지출과 비교해서 계산
+    }
+
+    /** 유형별 & 친반환경별 지출 상세 */
+    public StatisticsEcoCategoryDto findMonthExTypeDetail(String id, money_Type exType, EcoEnum eco, int year, int month) {
+        User user = userRepository.findById(id).get();
+        LocalDate startDate = LocalDate.of(year,month,1);
+        LocalDate endDate = LocalDate.of(year,month,startDate.lengthOfMonth());
+
+        // 친반환경별 유형별 지출 총합
+        Long totalMonthByType = 0L;
+        // 친반환경별 유형별 지출 개수
+        int countEx = 0;
+
+        // 한 달 지출 리스트 (날짜 + 지출 리스트)
+        List<StatisticsDateEcoCategoryDto> monthExpenditureList = new ArrayList<>();
+        for (int day = 1; day < endDate.getDayOfMonth() + 1; day++) {
+
+            // 하루 지출 리스트
+            List<ExpenditureTypeDetailDto> ex_days = expenditureDetailService.findDayByType(user, LocalDate.of(year, month, day), exType); // 지출 (중복 제거 전)
+
+            // eco 태그를 가진 지출 리스트만 추출
+            List<ExpenditureTypeDetailDto> ecoEx_days = new ArrayList<>();
+            for (ExpenditureTypeDetailDto dto : ex_days) {
+                if (dto.getEco() == eco) {
+                    ecoEx_days.add(dto);
+                }
+            }
+
+//            expenditureRepository.getMonthEcoExTypeList(user, exType, eco, startDate, endDate);
+
+            // 중복 제거
+            List<TypeDetailDto> ex_detailDtos = calendarService.getExpenditureTypeDtos(ecoEx_days);
+
+            // 지출 총합
+            for (TypeDetailDto dto : ex_detailDtos) {
+                if (dto.getType() == exType)
+                    totalMonthByType += dto.getCost();
+            }
+
+            countEx += ex_detailDtos.size();
+
+            if (ex_detailDtos.isEmpty())
+                continue;
+
+            List<TypeDetailDto> detailDtos = calendarService.getExpenditureTypeDtos(ecoEx_days); // 여러 개 친반환경 태그 -> 리스트
+
+            StatisticsDateEcoCategoryDto dto = StatisticsDateEcoCategoryDto.builder()
+                    .date(LocalDate.of(year, month, day))
+                    .detailDtoList(detailDtos)
+                    .build();
+
+            monthExpenditureList.add(dto);
+
+        }
+
+        StatisticsEcoCategoryDto dto = StatisticsEcoCategoryDto.builder()
+                .eco(eco)
+                .exType(exType)
+                .countEx(countEx)
+                .totalExpenditure(totalMonthByType)
+                .typeDetailList(monthExpenditureList)
+                .build();
+
+        return dto;
+    }
+
+    /** 친반환경별 유형별 지출 개수 */
+    public List<StatisticsCategoryCount> countEcoTypeExpenditure(String id, EcoEnum eco, int year, int month) {
+        List<StatisticsCategoryCount> categoryCounts = new ArrayList<>();
+        int totalCount = 0; // 모든 유형 지출 총개수
+        for (money_Type exType : money_Type.values()) { // 유형별로 순회
+            StatisticsEcoCategoryDto dayExTypeDetail = findMonthExTypeDetail(id, exType, eco, year, month);
+            totalCount += dayExTypeDetail.getCountEx();
+        }
+        for (money_Type exType : money_Type.values()) { // 유형별로 순회
+            StatisticsEcoCategoryDto dayExTypeDetail = findMonthExTypeDetail(id, exType, eco, year, month);
+            double percent = 0;
+            if (totalCount != 0) // 친반환경 지출 개수가 0인 경우 오류 처리
+                percent = (((double) dayExTypeDetail.getCountEx() / (double) totalCount) * 100.0);
+            if (dayExTypeDetail.getCountEx() == 0) // 해당 유형 지출이 없다면
+                continue; // 리스트에서 제외
+            StatisticsCategoryCount categoryCount = StatisticsCategoryCount.builder()
+                    .exType(exType)
+                    .count(dayExTypeDetail.getCountEx())
+                    .percent((int) Math.round(percent))
+                    .build();
+            categoryCounts.add(categoryCount);
+        }
+        return categoryCounts;
     }
 
 }

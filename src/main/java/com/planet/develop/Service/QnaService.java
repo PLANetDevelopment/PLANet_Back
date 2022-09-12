@@ -1,6 +1,6 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.QnaDto;
+import com.planet.develop.DTO.QnaDto.QnaDto;
 import com.planet.develop.Entity.Qna;
 
 public interface QnaService {

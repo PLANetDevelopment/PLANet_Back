@@ -1,9 +1,15 @@
 package com.planet.develop.Service;
 
 import com.planet.develop.DTO.*;
+import com.planet.develop.DTO.CalendarDto.CalendarDto;
+import com.planet.develop.DTO.EcoDto.EcoDto;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureTypeDetailDto;
+import com.planet.develop.DTO.ExpenditureDto.TypeDetailDto;
 import com.planet.develop.Enum.TIE;
+import com.planet.develop.Enum.money_Type;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CalendarService {
     /** 월별 지출/수입 총액과 일별 지출/소비 총액 구하기 */
@@ -16,4 +22,5 @@ public interface CalendarService {
     List<EcoDto> dupEcoList(List<ExpenditureTypeDetailDto> ex_days, Long exEno);
     /** 일별 전체/수입/지출 상세 내역 */
     List<TypeDetailDto> inExTypeDetailDto(String id, int month, int day, TIE tie);
+    Map<money_Type, List<TypeDetailDto>> makeListToMap(List<TypeDetailDto> dtos);
 }

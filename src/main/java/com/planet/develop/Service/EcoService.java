@@ -1,9 +1,9 @@
 package com.planet.develop.Service;
 
 import com.planet.develop.DTO.CheckDupDto;
-import com.planet.develop.DTO.EcoCostDto;
-import com.planet.develop.DTO.EcoDetailDto;
-import com.planet.develop.DTO.ExpenditureRequestDto;
+import com.planet.develop.DTO.EcoDto.EcoCostDto;
+import com.planet.develop.DTO.EcoDto.EcoDetailDto;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureRequestDto;
 import com.planet.develop.Entity.Eco;
 import com.planet.develop.Entity.Expenditure;
 import com.planet.develop.Enum.EcoDetail;

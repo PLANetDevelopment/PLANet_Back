@@ -1,11 +1,10 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.IncomeRequestDto;
+import com.planet.develop.DTO.IncomeDto.IncomeRequestDto;
 import com.planet.develop.Entity.Income;
 import com.planet.develop.Entity.User;
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;
-import com.planet.develop.Login.Model.KakaoUser;
 import com.planet.develop.Login.Repository.KakaoUserRepository;
 import com.planet.develop.Repository.IncomeRepository;
 import com.planet.develop.Repository.UserRepository;

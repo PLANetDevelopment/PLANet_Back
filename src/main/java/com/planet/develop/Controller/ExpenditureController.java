@@ -1,7 +1,7 @@
 package com.planet.develop.Controller;
 
-import com.planet.develop.DTO.ExpenditureRequestDto;
-import com.planet.develop.DTO.ExpenditureResponseDto;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureRequestDto;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureResponseDto;
 import com.planet.develop.Entity.Expenditure;
 import com.planet.develop.Entity.ExpenditureDetail;
 import com.planet.develop.Login.JWT.JwtProperties;

@@ -1,8 +1,8 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.EcoCostDto;
-import com.planet.develop.DTO.EcoDetailDto;
-import com.planet.develop.DTO.ExpenditureRequestDto;
+import com.planet.develop.DTO.EcoDto.EcoCostDto;
+import com.planet.develop.DTO.EcoDto.EcoDetailDto;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureRequestDto;
 import com.planet.develop.Entity.Eco;
 import com.planet.develop.Entity.Expenditure;
 import com.planet.develop.Enum.EcoEnum;
@@ -50,9 +50,6 @@ public class EcoServiceImpl implements EcoService {
     @Override
     public List<EcoDetailDto> dupCheckedListByEco(String user, int year, int month, int days, EcoEnum eco) {
         List<EcoDetailDto> beforeDupCheckList = exListByEco(user, year, month, days, eco);
-        for (EcoDetailDto dto : beforeDupCheckList) {
-            log.info(dto.getEx_eno() + " " + dto.getEx_eno());
-        }
         List<EcoDetailDto> afterDupCheckList = dupCheck(beforeDupCheckList);
         return afterDupCheckList;
     }

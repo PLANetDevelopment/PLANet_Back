@@ -1,6 +1,6 @@
 package com.planet.develop.Controller;
 
-import com.planet.develop.DTO.QnaDto;
+import com.planet.develop.DTO.QnaDto.QnaDto;
 import com.planet.develop.Entity.Qna;
 import com.planet.develop.Login.JWT.JwtProperties;
 import com.planet.develop.Repository.QnaRepository;

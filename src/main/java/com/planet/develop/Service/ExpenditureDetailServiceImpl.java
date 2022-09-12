@@ -1,6 +1,7 @@
 package com.planet.develop.Service;
 
-import com.planet.develop.DTO.*;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureRequestDto;
+import com.planet.develop.DTO.ExpenditureDto.ExpenditureTypeDetailDto;
 import com.planet.develop.Entity.Expenditure;
 import com.planet.develop.Entity.ExpenditureDetail;
 import com.planet.develop.Entity.User;
@@ -76,6 +77,18 @@ public class ExpenditureDetailServiceImpl implements ExpenditureDetailService {
     @Override
     public List<ExpenditureTypeDetailDto> findDay(User user, LocalDate date) {
         List<Object[]> dayList = expenditureRepository.getDayList(user, date);
+        List<ExpenditureTypeDetailDto> dtoList = new ArrayList<>();
+        for (Object[] arr : dayList) {
+            ExpenditureTypeDetailDto dto = new ExpenditureTypeDetailDto(
+                    arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8]);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    @Override
+    public List<ExpenditureTypeDetailDto> findDayByType(User user, LocalDate date, money_Type type) {
+        List<Object[]> dayList = expenditureRepository.getDayExTypeList(user,type, date);
         List<ExpenditureTypeDetailDto> dtoList = new ArrayList<>();
         for (Object[] arr : dayList) {
             ExpenditureTypeDetailDto dto = new ExpenditureTypeDetailDto(

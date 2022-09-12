@@ -1,5 +1,6 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.ExpenditureDto;
 
+import com.planet.develop.DTO.EcoDto.EcoDto;
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;
 import lombok.AllArgsConstructor;
@@ -12,13 +13,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TypeDetailDto {
-    boolean isIncome = true;
-    money_Type type;
-    money_Way way;
-    Long id;
-    Long cost;
-    String memo;
-    List<EcoDto> ecoList;
+    boolean isIncome = true; // 수입 or 지출
+    money_Type type; // 유형
+    money_Way way; // 방법
+    Long id; // 아이디
+    Long cost; // 비용
+    String memo; // 메모
+    List<EcoDto> ecoList; // 에코 리스트
 
     public void saveIncomeType(money_Type type, money_Way way, Long cost, String memo, Long id) {
         this.type = type;

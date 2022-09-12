@@ -1,4 +1,4 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.ExpenditureDto;
 
 import lombok.Data;
 

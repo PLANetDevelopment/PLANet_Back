@@ -1,4 +1,4 @@
-package com.planet.develop.DTO;
+package com.planet.develop.DTO.IncomeDto;
 
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;

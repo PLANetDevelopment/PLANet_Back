@@ -1,6 +1,6 @@
 package com.planet.develop.Entity;
 
-import com.planet.develop.DTO.QnaDto;
+import com.planet.develop.DTO.QnaDto.QnaDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
