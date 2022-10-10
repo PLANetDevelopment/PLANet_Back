@@ -21,4 +21,7 @@ public class User {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "image")
+    private String image;
+
 }
