@@ -67,6 +67,30 @@ public class Post extends BaseEntity {
         this.category = dto.getCategory();
     }
 
+    /** 좋아요 */
+    @Transactional
+    public void like() {
+        increaselikeCount();
+    }
+
+    /** 좋아요 취소 */
+    @Transactional
+    public void cancelLike() {
+        decreaselikeCount();
+    }
+
+    /** 댓글 달기 */
+    @Transactional
+    public void comment() {
+        increaseCommentCount();
+    }
+
+    /** 댓글 삭제 */
+    @Transactional
+    public void cancelComment() {
+        decreaseCommentCount();
+    }
+
     public SavePostDto entityToSaveDto() {
         SavePostDto dto = SavePostDto.builder()
                 .title(this.title)

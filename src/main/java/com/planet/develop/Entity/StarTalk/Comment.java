@@ -1,10 +1,13 @@
 package com.planet.develop.Entity.StarTalk;
 
+import com.planet.develop.DTO.PostDto.SaveCommentDto;
+import com.planet.develop.DTO.PostDto.SavePostDto;
 import com.planet.develop.Entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
@@ -30,5 +33,20 @@ public class Comment {
     private Post post; // 글 외래키 (다대일)
 
     private String comment; // 댓글 내용
+
+    public SaveCommentDto entityToSaveDto() {
+        SaveCommentDto dto = SaveCommentDto.builder()
+                .postId(this.post.getPostId())
+                .userId(this.user.getUserId())
+                .comment(this.comment)
+                .build();
+        return dto;
+    }
+
+    /** 댓글 내용 수정 */
+    @Transactional
+    public void update(SaveCommentDto dto) {
+        this.comment = dto.getComment();
+    }
 
 }

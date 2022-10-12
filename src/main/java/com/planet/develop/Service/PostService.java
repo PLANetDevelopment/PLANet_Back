@@ -1,5 +1,6 @@
 package com.planet.develop.Service;
 
+import com.planet.develop.DTO.PostDto.SaveCommentDto;
 import com.planet.develop.DTO.PostDto.SavePostDto;
 import com.planet.develop.Entity.StarTalk.Post;
 import com.planet.develop.Entity.User;
@@ -18,5 +19,11 @@ public interface PostService {
     List<Post> sortByOldest(); // 오래된 순으로 정렬하기
     List<Post> sortByNewest(); // 최근 순으로 정렬하기
 
+    void like(Long postId, String userId); // 좋아요
+    void cancelLike(Long likeId); // 좋아요 취소
+
+    void comment(SaveCommentDto dto); // 댓글 달기
+    void updateComment(SaveCommentDto dto); // 댓글 수정
+    void deleteComment(Long commentId); // 댓글 삭제
 
 }

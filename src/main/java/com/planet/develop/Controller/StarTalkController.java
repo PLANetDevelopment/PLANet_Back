@@ -1,5 +1,6 @@
 package com.planet.develop.Controller;
 
+import com.planet.develop.DTO.PostDto.SaveCommentDto;
 import com.planet.develop.DTO.PostDto.SavePostDto;
 import com.planet.develop.Entity.StarTalk.Post;
 import com.planet.develop.Entity.User;
@@ -60,10 +61,46 @@ public class StarTalkController {
     }
 
     /** 게시글 삭제 */
-    @DeleteMapping("/starTalk/deletePost/{postId}")
+    @PostMapping("/starTalk/deletePost/{postId}")
     public void deletePost(@PathVariable("postId") Long postId) {
         postService.delete(postId);
         System.out.println(postId + "번 게시글이 삭제됐습니다.");
+    }
+
+    /** 댓글 달기 */
+    @PostMapping("/starTalk/newComment/{postId}")
+    public void saveComment(@RequestBody SaveCommentDto commentDto) {
+        postService.comment(commentDto);
+        System.out.println(commentDto.getPostId() + "번 게시글에 댓글이 달렸습니다.");
+    }
+
+    /** 댓글 수정 */
+    @PostMapping("/starTalk/updateComment/{postId}")
+    public void updateComment(@RequestBody SaveCommentDto commentDto) {
+        postService.updateComment(commentDto);
+        System.out.println(commentDto.getPostId() + "번 게시글에 댓글이 수정됐습니다.");
+    }
+
+    /** 댓글 삭제 */
+    @DeleteMapping("/starTalk/deleteComment/{commentId}")
+    public void deleteComment(@PathVariable("commentId") Long commentId) {
+        postService.deleteComment(commentId);
+        System.out.println(commentId + "번 댓글이 삭제됐습니다.");
+    }
+
+    /** 좋아요 */
+    @PostMapping("/starTalk/saveLike/{postId}")
+    public void saveLike(@PathVariable("postId") Long postId) {
+        String userId = "topjoy22@naver.com";
+        postService.like(postId, userId);
+        System.out.println(postId + "번 게시글에 좋아요가 달렸습니다.");
+    }
+
+    /** 좋아요 취소 */
+    @PostMapping("/starTalk/deleteLike/{likeId}")
+    public void deleteLike(@PathVariable("likeId") Long postId) {
+        postService.cancelLike(likeId);
+        System.out.println(postId + "번 게시글에 좋아요가 삭제됐습니다.");
     }
 
 }
