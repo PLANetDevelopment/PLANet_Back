@@ -82,7 +82,7 @@ public class StarTalkController {
     }
 
     /** 댓글 삭제 */
-    @DeleteMapping("/starTalk/deleteComment/{commentId}")
+    @PostMapping("/starTalk/deleteComment/{commentId}")
     public void deleteComment(@PathVariable("commentId") Long commentId) {
         postService.deleteComment(commentId);
         System.out.println(commentId + "번 댓글이 삭제됐습니다.");
@@ -98,9 +98,9 @@ public class StarTalkController {
 
     /** 좋아요 취소 */
     @PostMapping("/starTalk/deleteLike/{likeId}")
-    public void deleteLike(@PathVariable("likeId") Long postId) {
+    public void deleteLike(@PathVariable("likeId") Long likeId) {
         postService.cancelLike(likeId);
-        System.out.println(postId + "번 게시글에 좋아요가 삭제됐습니다.");
+        System.out.println(likeId + "번 좋아요가 취소됐습니다.");
     }
 
 }

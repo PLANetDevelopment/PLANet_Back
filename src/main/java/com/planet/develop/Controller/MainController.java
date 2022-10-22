@@ -26,6 +26,7 @@ public class MainController {
         String userName = user.getNickname();
         Long totalMonthIncome = incomeService.totalMonth(user,year,month);
         Long totalMonthExpenditure = expenditureDetailService.totalMonth(user,year, month);
+        // 전체 에코 퍼센티지로 수정하기
         double ecoPercentage = mainService.getPercentage(user, year, month);
         return new mainResponseDto(userName,totalMonthIncome,totalMonthExpenditure,ecoPercentage,100-ecoPercentage);
     }
