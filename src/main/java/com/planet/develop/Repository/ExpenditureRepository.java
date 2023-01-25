@@ -103,4 +103,13 @@ public interface ExpenditureRepository extends JpaRepository<Expenditure, Long> 
             "where e.user = :user and :startDate<=e.date and e.date <= :endDate and e.detail.exType = :exType")
     Long calMonthByExType(@Param("user") User user, @Param("exType") money_Type exType, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
+    /**
+     * 특정 사용자의 총 지출 리스트 가져오기
+     */
+    @Query("select count(e.eno) from Expenditure e " +
+            "left join ExpenditureDetail ed on e.eno = ed.eno " +
+            "left join Eco ec on e.eno = ec.expenditure.eno " +
+            "where e.user = :user and ec.eco = :eco")
+    Long countTotalEcoNum(@Param("user") User user, @Param("eco") EcoEnum eco);
+
 }

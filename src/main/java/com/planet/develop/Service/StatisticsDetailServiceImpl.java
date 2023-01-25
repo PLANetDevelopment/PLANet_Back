@@ -16,8 +16,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -234,6 +233,7 @@ public class StatisticsDetailServiceImpl implements StatisticsDetailService {
                     .build();
             categoryCounts.add(categoryCount);
         }
+        Collections.sort(categoryCounts); // 내림차순 정렬
         return categoryCounts;
     }
 

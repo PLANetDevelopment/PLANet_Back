@@ -5,6 +5,7 @@ import com.planet.develop.DTO.ExpenditureDto.ExpenditureRequestDto;
 import com.planet.develop.Entity.Expenditure;
 import com.planet.develop.Entity.ExpenditureDetail;
 import com.planet.develop.Entity.User;
+import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;
 
@@ -40,6 +41,8 @@ public interface ExpenditureDetailService {
     List<Expenditure> getMonthTypeList(User user, int year, int month, money_Type type);
 
     List<Expenditure> getMonthWayList(User user, int year, int month, money_Way way);
+
+    Long countTotalEcoNum(User user, EcoEnum eco);
 
     Long update(Long id, ExpenditureRequestDto dto) throws IllegalAccessException;
 

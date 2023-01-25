@@ -22,7 +22,7 @@ import java.util.List;
 public class Post extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long postId; // 기본키
 
@@ -38,7 +38,10 @@ public class Post extends BaseEntity {
 
     private int likeCount; // 좋아요 수
 
-    private int commentCount; // 댓글 수
+    private int commentCount; // 댓글
+
+//    @OneToMany(mappedBy = "post")
+//    private List<Comment> comments = new ArrayList<>(); // 댓글 외래키 (일대다)
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> postImageList = new ArrayList<>(); // 이미지 외래키 (일대다 양방향)

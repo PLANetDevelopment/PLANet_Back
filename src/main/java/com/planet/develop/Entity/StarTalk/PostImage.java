@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Getter
 public class PostImage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private Long imageId; // 기본키
 
@@ -24,5 +24,4 @@ public class PostImage {
     private Post post; // 글 외래키 (다대일 양방향)
 
     private String image; // 이미지
-
 }

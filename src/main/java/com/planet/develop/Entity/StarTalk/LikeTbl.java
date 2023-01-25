@@ -14,10 +14,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Like {
+public class LikeTbl {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_id")
     private Long likeId; // 기본키
 

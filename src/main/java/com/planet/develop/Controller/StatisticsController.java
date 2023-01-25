@@ -167,7 +167,7 @@ public class StatisticsController {
         return statisticsDetailService.findMonthExTypeDetail(userId, exType, EcoEnum.G, year, month);
     }
 
-    /** 친환경 유형별 지출 상세 */
+    /** 반환경 유형별 지출 상세 */
     @GetMapping("/statistics/expenditure/{year}/{month}/{category}/ecoR")
     public StatisticsEcoCategoryDto findCategoryEcoRDetail(@RequestHeader(JwtProperties.USER_ID) String userId, @PathVariable("category") String type, @PathVariable("year") int year, @PathVariable("month") int month) {
         money_Type exType = getMoney_type(type);

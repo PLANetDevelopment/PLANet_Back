@@ -1,5 +1,6 @@
-package com.planet.develop.Entity.StarTalk;
+package com.planet.develop.DTO.PostDto;
 
+import com.planet.develop.Entity.StarTalk.PostImage;
 import com.planet.develop.Entity.User;
 import lombok.*;
 

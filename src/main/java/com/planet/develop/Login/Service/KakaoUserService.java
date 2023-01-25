@@ -48,8 +48,8 @@ public class KakaoUserService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "30e5410f7f73eeb781a471522f30d2a6");
-//        params.add("redirect_uri", "https://main.d2f9fwhj50mv28.amplifyapp.com/oauth");
-        params.add("redirect_uri", "http://localhost:3000/oauth");
+        params.add("redirect_uri", "https://main.d2f9fwhj50mv28.amplifyapp.com/oauth");
+//        params.add("redirect_uri", "http://localhost:3000/oauth");
         params.add("code", code);
         params.add("client_secret", "fm0QlhjRTs8XDMaBjkECXApaTt65NWgV");
 

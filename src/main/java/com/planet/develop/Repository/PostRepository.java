@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-
     Post findByPostId(Long postId); // 기본키로 찾기
     List<Post> findAllByUser(User user); // 사용자로 찾기
     List<Post> findAllByCategory(String category); // 카테고리로 찾기
     void deleteByPostId(Long postId); // 기본키로 삭제하기
-
+    List<Post> findByTitleContaining(String query); // 제목에서 검색
+    List<Post> findByContentContaining(String query); // 본문에서 검색
 }

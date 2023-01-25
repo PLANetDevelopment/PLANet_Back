@@ -15,6 +15,7 @@ import java.time.LocalDate;
 public class MainService {
     private final StatisticsService statisticsService;
     private final StatisticsRepository statisticsRepository;
+    private final ExpenditureDetailService detailService;
     public double getPercentage(User user, int year, int month){
         LocalDate startDate = LocalDate.of(year, month, 1);
         LocalDate endDate = LocalDate.of(year,month,startDate.lengthOfMonth());
@@ -29,5 +30,9 @@ public class MainService {
         System.out.println("퍼센트: " + percentage);
 
         return percentage;
+    }
+    /** 사용자 전체 지출 내용 가져오기 -> 전체 에코 퍼센티지 계산하기 */
+    public Long countTotalEcoNum(User user, EcoEnum eco) {
+        return detailService.countTotalEcoNum(user, eco);
     }
 }

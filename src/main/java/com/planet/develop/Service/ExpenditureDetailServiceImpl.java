@@ -5,6 +5,7 @@ import com.planet.develop.DTO.ExpenditureDto.ExpenditureTypeDetailDto;
 import com.planet.develop.Entity.Expenditure;
 import com.planet.develop.Entity.ExpenditureDetail;
 import com.planet.develop.Entity.User;
+import com.planet.develop.Enum.EcoEnum;
 import com.planet.develop.Enum.money_Type;
 import com.planet.develop.Enum.money_Way;
 import com.planet.develop.Repository.EcoRepository;
@@ -203,6 +204,11 @@ public class ExpenditureDetailServiceImpl implements ExpenditureDetailService {
                 .setParameter("user", user)
                 .setParameter("way", way)
                 .getResultList();
+    }
+
+    @Override
+    public Long countTotalEcoNum(User user, EcoEnum eco) {
+        return expenditureRepository.countTotalEcoNum(user, eco);
     }
 
     /** 지출 수정 */

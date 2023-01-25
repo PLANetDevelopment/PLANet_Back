@@ -10,40 +10,34 @@ import lombok.NoArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-/** 댓글 */
+/** 대댓글 */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
-public class Comment {
+public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long commentId; // 기본키
+    @Column(name = "reply_id")
+    private Long replyId; // 기본키
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 사용자 외래키 (다대일)
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment; // 댓글 외래키 (다대일)
 
-    private Post post; // 글 외래키 (다대일)
-
-    private String comment; // 댓글 내용
-
-    @OneToMany(mappedBy = "comment")
-    private List<Reply> replys = new ArrayList<>(); // 대댓글 외래키 (일대다)
+    private String reply; // 댓글 내용
 
     /** 댓글 내용 수정 */
     @Transactional
     public void update(SaveCommentDto dto) {
-        this.comment = dto.getComment();
+        this.reply = dto.getComment();
     }
 
 }
